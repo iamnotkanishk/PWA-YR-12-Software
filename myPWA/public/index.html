@@ -1,29 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-<meta http-equiv="Content-Security-Policy" content="script-src 'self';">
-<link rel="stylesheet" href="css/style.css" />
-<title>VSCode Extension Catalogue</title>
-<link rel="manifest" href="manifest.json" />
-<link rel="icon" type="image/x-icon" href="/images/favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dishly</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="images/favicon.png" />
 </head>
 <body>
-<main>
-<nav>
-<img src="images/logo.png"/>
-<h1>VSCode Extensions</h1>
-<ul class="topnav">
-<li><a href="#">Home</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="suggest.html">Suggest</a></li>
-</ul>
-</nav>
-<div class="container">
-</div>
-</main>
-<script src="js/app.js"></script>
+  <main>
+    <nav>
+      <img src="images/logo3.png" alt="App logo" />
+      <h1>Dishly</h1>
+      <ul class="topnav">
+      </ul>
+    </nav>
+
+    <section class="controls">
+      <input id="q" type="search" placeholder="Search by RECIPIE or TAG:" />
+      <select id="cuisine">
+        <option value="">All cuisines</option>
+        <option>Italian</option>
+        <option>Indian</option>
+        <option>Thai</option>
+        <option>Mexican</option>
+      </select>
+      <button id="searchBtn" class="btn">Search</button>
+    </section>
+
+    <div class="container"></div>
+    
+    <!-- Recipe modal -->
+    <div id="recipeModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-overlay"></div>
+      <div class="modal-box">
+        <button class="modal-close" aria-label="Close">×</button>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/app.js" defer></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('serviceWorker.js');
+    }
+    // Click logo to reset to home (clear search and filters)
+    document.querySelector('nav img').addEventListener('click', () => {
+      const qInput = document.getElementById('q');
+      const cuisineSelect = document.getElementById('cuisine');
+      if (qInput) qInput.value = '';
+      if (cuisineSelect) cuisineSelect.value = '';
+      // Trigger search to load all recipes
+      const searchBtn = document.getElementById('searchBtn');
+      if (searchBtn) searchBtn.click();
+    });
+  </script>
 </body>
 </html>
