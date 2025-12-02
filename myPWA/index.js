@@ -1,8 +1,9 @@
+// myPWA/index.js
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
-
+// Initialize Express app and SQLite DB
 const app = express();
 const DB_PATH = path.join(__dirname, '.database', 'datasource.db');
 const db = new sqlite3.Database(DB_PATH, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
@@ -23,14 +24,14 @@ try {
 } catch (err) {
   console.warn('No seed SQL found — skipping seed.');
 }
-
+// Start server
 function startServer() {
   const PORT = 8000;
   app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
   });
 }
-
+// Seed the database if seed SQL is available
 if (seedSQL) {
   db.exec(seedSQL, (err) => {
     if (err) {
@@ -61,8 +62,9 @@ app.get('/api/recipes', (req, res) => {
        OR LOWER(cuisine) LIKE ?
   `;
 
-  const applyCuisine = cuisine.trim().length > 0;
-
+  const applyCuisine = cuisine.trim().length > 0; // whether to filter by cuisine
+  
+  // Execute query
   db.all(sql, [q, q, q, q], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     console.log(`API /recipes: query="${query}", cuisine="${cuisine}", rows=${rows.length}`);
